@@ -4,7 +4,7 @@ import sqlite3
 import time
 
 def pulldata(gameid, headers):
-    time.sleep(5)
+    time.sleep(3)
     r = requests.get('https://store.steampowered.com/api/appdetails/?appids={}'.format(gameid), headers=headers)
     # if not r.json()[str(gameid)]['success']:
     #     return gameid, None, None
@@ -41,7 +41,9 @@ def pulldata(gameid, headers):
         recommendations = datajson['recommendations']['total'] #probably won't use it
     release_date = datajson['release_date']['date']
     required_age = datajson['required_age']
-    supported_languages = "$".join(re.findall(r'\w+(?=<)',datajson['supported_languages'])) # \w+(?=<) regex string to get languages in a list
+    supported_languages = None
+    if 'supported_languages' in datakeys:
+        supported_languages = "$".join(re.findall(r'\w+(?=<)',datajson['supported_languages'])) # \w+(?=<) regex string to get languages in a list
     type_ = datajson['type']
     achievements = None
     if 'achievements' in datakeys:
