@@ -13,11 +13,13 @@ def pricedata(gameid, headers):
         return gameid, None, None, None, None, None
     default_price = max(jsondata['final'], key=lambda x: x[1]) #finds the highest price for the app
     lowest_price = min(jsondata['final'], key=lambda x: x[1])
-    first_sale = (None, None)
+    first_sale = None
     for x in jsondata['final']:
         if x[1] < default_price[1]:
             first_sale = x
             break
+    if not first_sale: #if there was no lower price than original
+        return (gameid, default_price[1], lowest_price[1], lowest_price[0]//1000, lowest_price[1], lowest_price[0]//1000) #then the first sale, lowest price are all the default price/date
     return (gameid, default_price[1], first_sale[1], first_sale[0]//1000, lowest_price[1], lowest_price[0]//1000)
 
 if __name__ == '__main__':
