@@ -1,4 +1,4 @@
-contact api
+
 calculate time of first sale (first price to second price, given that the price went down)
 make csv of game and that time
 import requests
@@ -6,7 +6,7 @@ import pandas
 from bs4 import BeautifulSoup
 
 def price_api(gameid):
-    r = requests.get('https://steamdb.info/api/GetPriceHistory/?subid={}&cc=us'.format(gameid))
+    r = requests.get('https://steamdb.info/api/GetPriceHistory/?appid={}&cc=us'.format(gameid))
     q = r.json()
 
 def store_api(gameid):
