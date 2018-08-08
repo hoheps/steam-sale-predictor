@@ -23,16 +23,18 @@ def pricedata(gameid, headers):
     return (gameid, default_price[1], first_sale[1], first_sale[0]//1000, lowest_price[1], lowest_price[0]//1000)
 
 if __name__ == '__main__':
+    aws_instance = 1
     headers = requests.utils.default_headers()
     headers['user-agent'] = 'Opera/9.80 (Windows NT 6.0) Presto/2.12.388 Version/12.14'
-    con = sqlite3.connect('test.db')
+    con = sqlite3.connect('test{}.db'.format(aws_instance))
     cur = con.cursor() #this cursor fetches
     cur2 = con.cursor() #this one will insert
     cur.execute("DROP TABLE IF EXISTS game_price")
     cur.execute("CREATE TABLE game_price (id KEY, default_price FLOAT,\
     first_sale_price FLOAT, first_sale_date DATE,\
     lowest_price FLOAT, lowest_price_date DATE);")
-    cur.execute("SELECT * FROM game_list")
+    cur.execute("SELECT * FROM (SELECT * FROM game_list ORDER BY id LIMIT {}) ORDER BY id DESC LIMIT 499".format(aws_instance*499))
+    #why so weird? I had to run this on 6 different aws instances b/c of rate limits 
     row = cur.fetchone()
     i = 1
     while row:
