@@ -26,7 +26,7 @@ if __name__ == '__main__':
     aws_instance = 1
     headers = requests.utils.default_headers()
     headers['user-agent'] = 'Opera/9.80 (Windows NT 6.0) Presto/2.12.388 Version/12.14'
-    con = sqlite3.connect('test{}.db'.format(aws_instance))
+    con = sqlite3.connect('test.db'.format(aws_instance))
     cur = con.cursor() #this cursor fetches
     cur2 = con.cursor() #this one will insert
     cur.execute("DROP TABLE IF EXISTS game_price")
@@ -34,7 +34,7 @@ if __name__ == '__main__':
     first_sale_price FLOAT, first_sale_date DATE,\
     lowest_price FLOAT, lowest_price_date DATE);")
     cur.execute("SELECT * FROM (SELECT * FROM game_list ORDER BY id LIMIT {}) ORDER BY id DESC LIMIT 499".format(aws_instance*499))
-    #why so weird? I had to run this on 6 different aws instances b/c of rate limits 
+    #why so weird? I had to run this on 6 different aws instances b/c of rate limits :'(
     row = cur.fetchone()
     i = 1
     while row:
@@ -47,3 +47,7 @@ if __name__ == '__main__':
         i += 1
     con.commit()
     con.close()
+#you'll notice in the game prices that a LOT Of them have similar dates of  11/24/14. this is probably when steamdb started tracking price data, meaning it won't be as reliable for games before this date.
+#unfortunately, I found that that's a ALSO a lot of my first sale price data lie too. Maybe I will try to find the global lowest price a game reaches, and use a model to predict that.
+#I was relying somewhat on the fact that, even though sales happen at predetermined times, games are also released around these seasons and these sales, meaning that the uneven distribution could be balanced through this fact.
+#in retrospect, it probably would have been a lot easier to do this in one csv to avoid having to deal with all these databases
