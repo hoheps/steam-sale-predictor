@@ -1,0 +1,5 @@
+select count(*) from game_price where lowest_price IS NOT '';
+results give you 1998 that's not free-to-play (have no price)
+and with SELECT COUNT(*) FROM (select * from game_price where (lowest_price IS NOT '')) WHERE lowest_price != 0.0;
+you get 1638 where the lowest price is not 0.0 (this could mean a number of things, but usually indicated that the game went free-to-play, but could mean a free giveaway too.
+Regardless, I think that is a useful metric to have, so I will be keeping that data
