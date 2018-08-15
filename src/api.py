@@ -1,6 +1,6 @@
-
-calculate time of first sale (first price to second price, given that the price went down)
-make csv of game and that time
+#this is a basic framework of what I intended to do
+#calculate time of first sale (first price to second price, given that the price went down)
+#make csv of game and that time
 import requests
 import pandas
 from bs4 import BeautifulSoup
@@ -23,10 +23,10 @@ def charts_api():
 
 
 def main():
-    charts_api
-    for x in charts_api:
-        append(db api stuff)
-    to_csv
+    #charts_api
+    #for x in charts_api:
+        #append(db api stuff)
+    #to_csv
 
 if __name__ == '__main__':
     generate_csv()
